@@ -1,10 +1,23 @@
 package game;
 
+import materials.Coin;
 import materials.CoinState;
 
 import java.util.List;
 
 public class Rules {
+
+  private static Rules instance = null;
+
+  public Rules() {
+  }
+
+  public static Rules getInstance(){
+    if (instance == null){
+      instance = new Rules();
+    }
+    return instance;
+  }
 
   /**
    * Cette méthode permet de déterminer si une suite d'états de pièce permet de gagner à une partie
@@ -12,7 +25,18 @@ public class Rules {
    * @return true si un joueur a gagné, false sinon
    */
   public boolean checkWin(List<CoinState> states) {
-    // TODO: Votre code ici
+    int nbPile = 0;
+    if (states.size() < 1) { return false;}
+    for (int i = 1; i<states.size()-1; i++){
+      if (states.get(i).equals(CoinState.HEADS)){
+        nbPile++;
+        if (nbPile == 2){
+          return true;
+        }
+      } else {
+        nbPile = 0;
+      }
+    }
     return false;
   }
 }

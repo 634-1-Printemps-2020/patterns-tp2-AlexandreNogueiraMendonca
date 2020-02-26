@@ -13,6 +13,11 @@ public class Game {
     private Coin coin;
     private Map<Player, List<CoinState>> history;
 
+    private float moyenne;
+    private int plusPetit;
+    private int plusGrand;
+    private int total;
+
     public Game() {
         history = new HashMap<>();
     }
@@ -23,14 +28,38 @@ public class Game {
      * @param player le nouveau joueur
      */
     public void addPlayer(Player player) {
-      // TODO: Votre code ici
+      history.put(player, null);
     }
 
     /**
      * Faire joueur tous les joueurs et stocker chaque partie dans history
      */
     public void play() {
-      // TODO: Votre code ici
+        float sousTot = 0;
+        moyenne = 0;
+        plusPetit = Integer.MAX_VALUE;
+        plusGrand = Integer.MIN_VALUE;
+        coin = coin.getInstance();
+        rules = rules.getInstance();
+        List<CoinState> lCoinState = new ArrayList<>();
+        for (Player p : history.keySet()) {
+            lCoinState.clear();
+            while (rules.checkWin(lCoinState) == false){
+                p.play(coin);
+                CoinState stateCoin = coin.getState();
+                lCoinState.add(stateCoin);
+                total++;
+                sousTot++;
+            }
+            history.put(p, lCoinState);
+            if (lCoinState.size() < plusPetit){
+                plusPetit = lCoinState.size();
+            }
+            if (lCoinState.size() > plusGrand){
+                plusGrand = lCoinState.size();
+            }
+        }
+        moyenne = sousTot / lCoinState.size();
     }
 
     /**
@@ -39,8 +68,8 @@ public class Game {
      * @return Statistics
      */
     public Statistics getStatistics() {
-      // TODO: Votre code ici
-      return null;
+        Statistics stats = new Statistics(moyenne, plusPetit, plusGrand, total);
+        return stats;
     }
 
     /**
@@ -49,8 +78,7 @@ public class Game {
      * @return Map contenant chaque joueur et la liste des ses lancers
      */
     public Map<Player, List<CoinState>> getHistory() {
-      // TODO: Votre code ici
-      return null;
+      return history;
     }
 
 
@@ -61,8 +89,7 @@ public class Game {
      * @return la liste des lancers d'un joueur
      */
     public List<CoinState> getSpecificHistory(Player player) {
-      // TODO: Votre code ici
-      return null;
+      return history.get(player);
     }
 
 }
