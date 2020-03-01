@@ -28,28 +28,25 @@ public class Game {
      * @param player le nouveau joueur
      */
     public void addPlayer(Player player) {
-      history.put(player, null);
+        history.put(player, null);
     }
 
     /**
      * Faire joueur tous les joueurs et stocker chaque partie dans history
      */
     public void play() {
-        float sousTot = 0;
         moyenne = 0;
         plusPetit = Integer.MAX_VALUE;
         plusGrand = Integer.MIN_VALUE;
         coin = coin.getInstance();
         rules = rules.getInstance();
-        List<CoinState> lCoinState = new ArrayList<>();
+        List<CoinState> lCoinState;
         for (Player p : history.keySet()) {
-            lCoinState.clear();
+            lCoinState = new ArrayList<>();
             while (rules.checkWin(lCoinState) == false){
                 p.play(coin);
-                CoinState stateCoin = coin.getState();
-                lCoinState.add(stateCoin);
+                lCoinState.add(coin.getState());
                 total++;
-                sousTot++;
             }
             history.put(p, lCoinState);
             if (lCoinState.size() < plusPetit){
@@ -59,7 +56,7 @@ public class Game {
                 plusGrand = lCoinState.size();
             }
         }
-        moyenne = sousTot / lCoinState.size();
+        moyenne = total / history.size();
     }
 
     /**

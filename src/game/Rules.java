@@ -26,11 +26,11 @@ public class Rules {
    */
   public boolean checkWin(List<CoinState> states) {
     int nbPile = 0;
-    if (states.size() < 1) { return false;}
-    for (int i = 1; i<states.size()-1; i++){
+    if (states.size() < 2) { return false;}
+    for (int i = 0; i<states.size(); i++){
       if (states.get(i).equals(CoinState.HEADS)){
         nbPile++;
-        if (nbPile == 2){
+        if (nbPile == 3){
           return true;
         }
       } else {
